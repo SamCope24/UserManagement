@@ -20,13 +20,57 @@ public class UsersController : Controller
             Surname = p.Surname,
             Email = p.Email,
             IsActive = p.IsActive
-        });
+        }).ToList();
 
         var model = new UserListViewModel
         {
-            Items = items.ToList()
+            Items = items
         };
 
         return View(model);
+    }
+
+    [HttpGet("active")]
+    public IActionResult ActiveUsers()
+    {
+        var activeUsers = _userService.FilterByActive(true)
+            .Select(p => new UserListItemViewModel
+            {
+                Id = p.Id,
+                Forename = p.Forename,
+                Surname = p.Surname,
+                Email = p.Email,
+                IsActive = p.IsActive
+            })
+            .ToList();
+
+        var model = new UserListViewModel
+        {
+            Items = activeUsers
+        };
+
+        return View("List", model);
+    }
+
+    [HttpGet("inactive")]
+    public IActionResult InActiveUsers()
+    {
+        var activeUsers = _userService.FilterByActive(false)
+            .Select(p => new UserListItemViewModel
+            {
+                Id = p.Id,
+                Forename = p.Forename,
+                Surname = p.Surname,
+                Email = p.Email,
+                IsActive = p.IsActive
+            })
+            .ToList();
+
+        var model = new UserListViewModel
+        {
+            Items = activeUsers
+        };
+
+        return View("List", model);
     }
 }

@@ -1,6 +1,6 @@
 using UserManagement.Models;
 
-namespace UserManagement.Services.Tests.Doubles;
+namespace UserManagement.Data.Testing.Entities;
 
 public static class UserTestDoubles
 {

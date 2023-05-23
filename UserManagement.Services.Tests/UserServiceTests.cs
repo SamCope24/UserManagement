@@ -1,7 +1,7 @@
 using System.Linq;
+using UserManagement.Data.Testing.Entities;
 using UserManagement.Models;
 using UserManagement.Services.Domain.Implementations;
-using UserManagement.Services.Tests.Doubles;
 
 namespace UserManagement.Data.Tests;
 
