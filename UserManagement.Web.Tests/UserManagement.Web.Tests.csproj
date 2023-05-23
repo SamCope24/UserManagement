@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\UserManagement.Web\UserManagement.Web.csproj" />
     <ProjectReference Include="..\UserManagement.Data.Testing\UserManagement.Data.Testing.csproj" />
+    <ProjectReference Include="..\UserManagement.Common.Testing\UserManagement.Common.Testing.csproj" />
   </ItemGroup>
 
 </Project>

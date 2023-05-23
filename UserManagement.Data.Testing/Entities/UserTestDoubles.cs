@@ -7,9 +7,12 @@ public static class UserTestDoubles
     public static User Stub(string forename = "Luke", string surname = "Skywalker", bool isActive = true)
         => new()
             {
-                Forename = "Luke",
-                Surname = "Skywalker",
+                Forename = forename,
+                Surname = surname,
                 Email = $"{forename}.{surname}@rebelalliance.org",
                 IsActive = isActive
         };
+
+    public static IEnumerable<User> StubCollection(int numberOfItems = 5)
+        => Enumerable.Range(0, numberOfItems).Select(_ => Stub());
 }

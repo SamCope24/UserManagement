@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using UserManagement.Common.Mappers;
+using UserManagement.Models;
 using UserManagement.Services.Domain.Interfaces;
 using UserManagement.Web.Models.Users;
 
@@ -8,69 +11,36 @@ namespace UserManagement.WebMS.Controllers;
 public class UsersController : Controller
 {
     private readonly IUserService _userService;
-    public UsersController(IUserService userService) => _userService = userService;
+    private readonly IMapper<User, UserListItemViewModel> _dataEntityToViewModelMapper;
+
+    public UsersController(IUserService userService, IMapper<User, UserListItemViewModel> dataEntityToViewModelMapper)
+    {
+        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+        _dataEntityToViewModelMapper = dataEntityToViewModelMapper ?? throw new ArgumentNullException(nameof(dataEntityToViewModelMapper));
+    }
 
     [HttpGet]
     public ViewResult List()
     {
-        var items = _userService.GetAll().Select(p => new UserListItemViewModel
-        {
-            Id = p.Id,
-            Forename = p.Forename,
-            Surname = p.Surname,
-            Email = p.Email,
-            IsActive = p.IsActive
-        }).ToList();
-
-        var model = new UserListViewModel
-        {
-            Items = items
-        };
-
-        return View(model);
+        var userItems = GetUsers();
+        return GetUserListViewResult(userItems);
     }
 
-    [HttpGet("active")]
-    public IActionResult ActiveUsers()
+    private ViewResult GetUserListViewResult(List<UserListItemViewModel> items) => View("List", new UserListViewModel()
     {
-        var activeUsers = _userService.FilterByActive(true)
-            .Select(p => new UserListItemViewModel
-            {
-                Id = p.Id,
-                Forename = p.Forename,
-                Surname = p.Surname,
-                Email = p.Email,
-                IsActive = p.IsActive
-            })
-            .ToList();
+        Items = items
+    });
 
-        var model = new UserListViewModel
-        {
-            Items = activeUsers
-        };
+    private List<UserListItemViewModel> GetUsers() =>
+        _userService.GetAll().Select(p => _dataEntityToViewModelMapper.MapFrom(p)).ToList();
 
-        return View("List", model);
-    }
-
-    [HttpGet("inactive")]
-    public IActionResult InActiveUsers()
+    [HttpGet("filter-by-active")]
+    public ViewResult FilterByActive(bool isActive)
     {
-        var activeUsers = _userService.FilterByActive(false)
-            .Select(p => new UserListItemViewModel
-            {
-                Id = p.Id,
-                Forename = p.Forename,
-                Surname = p.Surname,
-                Email = p.Email,
-                IsActive = p.IsActive
-            })
-            .ToList();
-
-        var model = new UserListViewModel
-        {
-            Items = activeUsers
-        };
-
-        return View("List", model);
+        var activeUserItems = GetFilteredUsers(isActive);
+        return GetUserListViewResult(activeUserItems);
     }
+
+    private List<UserListItemViewModel> GetFilteredUsers(bool isActive) =>
+        _userService.FilterByActive(isActive).Select(_dataEntityToViewModelMapper.MapFrom).ToList();
 }
