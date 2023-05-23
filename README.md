@@ -11,7 +11,7 @@ Complete as many of the tasks below as you can. These are split into 3 levels of
 * **Advanced** - Slightly more technical tasks and problem solving
 * **Expert** - Tasks with a higher level of problem solving and architecture needed
 
-### 1. Filters Section (Standard)
+### 1. Filters Section (Standard) - Done feature/filters-selection
 
 The users page contains 3 buttons below the user listing - **Show All**, **Active Only** and **Non Active**. Show All has already been implemented. Implement the remaining buttons using the following logic:
 * Active Only – This should show only users where their `IsActive` property is set to `true`
