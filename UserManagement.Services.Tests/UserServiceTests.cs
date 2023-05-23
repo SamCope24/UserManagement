@@ -1,6 +1,7 @@
 using System.Linq;
 using UserManagement.Models;
 using UserManagement.Services.Domain.Implementations;
+using UserManagement.Services.Tests.Doubles;
 
 namespace UserManagement.Data.Tests;
 
@@ -20,17 +21,12 @@ public class UserServiceTests
         result.Should().BeSameAs(users);
     }
 
-    private IQueryable<User> SetupUsers(string forename = "Johnny", string surname = "User", string email = "juser@example.com", bool isActive = true)
+    private IQueryable<User> SetupUsers()
     {
         var users = new[]
         {
-            new User
-            {
-                Forename = forename,
-                Surname = surname,
-                Email = email,
-                IsActive = isActive
-            }
+            UserTestDoubles.Stub(isActive: true),
+            UserTestDoubles.Stub(isActive: false)
         }.AsQueryable();
 
         _dataContext
@@ -42,4 +38,17 @@ public class UserServiceTests
 
     private readonly Mock<IDataContext> _dataContext = new();
     private UserService CreateService() => new(_dataContext.Object);
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void Result_AfterCallingFilterByActive_IsFilteredCollectionOfUsers(bool isActive)
+    {
+        var service = CreateService();
+        var users = SetupUsers();
+
+        var result = service.FilterByActive(isActive);
+
+        result.Should().AllSatisfy(x => x.IsActive.Should().Be(isActive));
+    }
 }
