@@ -3,7 +3,7 @@ using UserManagement.Data.Entities;
 
 namespace UserManagement.Data.Tests;
 
-public class DataContextTests
+public class InMemoryDataContextTests
 {
     [Fact]
     public void GetAll_WhenNewEntityAdded_MustIncludeNewEntity()
@@ -43,5 +43,5 @@ public class DataContextTests
         result.Should().NotContain(s => s.Email == entity.Email);
     }
 
-    private DataContext CreateContext() => new();
+    private static InMemoryDataContext CreateContext() => new();
 }
