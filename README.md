@@ -48,7 +48,7 @@ Some ideas are:
 * Update the data access layer to support asynchronous operations.
 * Implement authentication and login based on the users being stored.
 * Implement bundling of static assets.
-* Update the data access layer to use a real database, and implement database schema migrations.
+* Update the data access layer to use a real database, and implement database schema migrations. (feature/adding-real-database)
 
 ## Additional Notes
 
