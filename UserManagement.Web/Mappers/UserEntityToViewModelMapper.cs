@@ -20,7 +20,8 @@ public class UserEntityToViewModelMapper : IMapper<User, UserListItemViewModel>
             Forename = input.Forename,
             Surname = input.Surname,
             Email = input.Email,
-            IsActive = input.IsActive
+            IsActive = input.IsActive,
+            DateOfBirth = input.DateOfBirth
         };
     }
 }

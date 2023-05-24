@@ -75,4 +75,15 @@ public class UserEntityToViewModelMapperTests
 
         result.IsActive.Should().Be(input.IsActive);
     }
+
+    [Fact]
+    public void DateOfBirth_AfterCallingMapFrom_HasValueAssignedFromDataEntityDateOfBirthProperty()
+    {
+        var mapper = new UserEntityToViewModelMapper();
+        var input = AnyUser();
+
+        var result = mapper.MapFrom(input);
+
+        result.DateOfBirth.Should().Be(input.DateOfBirth);
+    }
 }

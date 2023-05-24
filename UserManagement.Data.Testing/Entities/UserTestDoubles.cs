@@ -10,7 +10,8 @@ public static class UserTestDoubles
                 Forename = forename,
                 Surname = surname,
                 Email = $"{forename}.{surname}@rebelalliance.org",
-                IsActive = isActive
+                IsActive = isActive,
+                DateOfBirth = DateTime.UtcNow
         };
 
     public static IEnumerable<User> StubCollection(int numberOfItems = 5)
