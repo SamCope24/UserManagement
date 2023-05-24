@@ -57,6 +57,14 @@ public class UserControllerTests
     }
 
     [Fact]
+    public void List_WhenCalled_InvokesUserServiceGetAllOnce()
+    {
+        var controller = CreateController();
+        controller.List();
+        _userService.Verify(x => x.GetAll(), Times.Once);
+    }
+
+    [Fact]
     public void List_WhenServiceReturnsUsers_ModelMustContainUsers()
     {
         var controller = CreateController();
@@ -86,5 +94,35 @@ public class UserControllerTests
         result.Model
             .Should().BeOfType<UserListViewModel>()
             .Which.Items.Should().NotBeEmpty();
+    }
+
+    [Fact]
+    public void FilterByActive_WhenCalled_InvokesUserServiceFilterByActiveOnce()
+    {
+        var controller = CreateController();
+        const bool IsActive = true;
+        controller.FilterByActive(IsActive);
+        _userService.Verify(x => x.FilterByActive(IsActive), Times.Once);
+    }
+
+    [Fact]
+    public void Delete_WhenCalled_InvokesUserServiceGetUserOnce()
+    {
+        var controller = CreateController();
+        const int UserId = 5;
+        controller.Delete(UserId);
+        _userService.Verify(x => x.GetUser(UserId), Times.Once);
+    }
+
+    [Fact]
+    public void Delete_WhenCalled_InvokesUserServiceDeleteUserOnce()
+    {
+        var controller = CreateController();
+        var userToBeDeleted = UserTestDoubles.Stub();
+        _userService.Setup(x => x.GetUser(It.IsAny<long>())).Returns(userToBeDeleted);
+
+        controller.Delete(userToBeDeleted.Id);
+
+        _userService.Verify(x => x.DeleteUser(userToBeDeleted), Times.Once);
     }
 }

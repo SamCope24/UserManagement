@@ -45,7 +45,7 @@
                             <ul class="dropdown-menu" aria-labelledby="btnToggleActions">
                                 <li><a class="dropdown-item" href="#">View</a></li>
                                 <li><a class="dropdown-item" href="#">Edit</a></li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                                <li><a asp-controller="Users" asp-action="Delete" asp-route-id="@item.Id" class="dropdown-item">Delete</a></li>
                             </ul>
                         </div>
                     </td>
@@ -58,8 +58,8 @@
 <div>
     <div class="btn-group" role="group">
         <a asp-controller="Users" asp-action="List" class="btn btn-default">Show All</a>
-        <a asp-controller="Users" asp-action="FilterByActive", asp-route-isActive="true", class="btn btn-default">Active Only</a>
-        <a asp-controller="Users" asp-action="FilterByActive", asp-route-isActive="false", class="btn btn-default">Non Active</a>
+        <a asp-controller="Users" asp-action="FilterByActive" asp-route-isActive="true" class="btn btn-default">Active Only</a>
+        <a asp-controller="Users" asp-action="FilterByActive" asp-route-isActive="false" class="btn btn-default">Non Active</a>
     </div>
 
     <a href="#" class="btn btn-primary float-end">

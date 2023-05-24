@@ -43,4 +43,12 @@ public class UsersController : Controller
 
     private List<UserListItemViewModel> GetFilteredUsers(bool isActive) =>
         _userService.FilterByActive(isActive).Select(_dataEntityToViewModelMapper.MapFrom).ToList();
+
+    [HttpGet("delete/{id}")]
+    public IActionResult Delete(long id)
+    {
+        var user = _userService.GetUser(id);
+        _userService.DeleteUser(user!);
+        return RedirectToAction("List");
+    }
 }
