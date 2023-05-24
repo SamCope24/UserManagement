@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UserManagement.Common.Logging;
 using UserManagement.Data;
 using UserManagement.Data.Entities;
 using UserManagement.Data.Testing.Entities;
@@ -19,7 +20,13 @@ public class UserServiceTests
         _dataContext.Verify(x => x.GetAll<User>(), Times.Once);
     }
 
-    private UserService CreateService() => new(_dataContext.Object);
+    private static UserService CreateServiceWith(IDataContext dataAccess, ILogger logger)
+        => new(dataAccess, logger);
+
+    private UserService CreateService() =>
+        CreateServiceWith(_dataContext.Object, DummyLogger());
+
+    private static ILogger DummyLogger() => Mock.Of<ILogger>();
 
     [Fact]
     public void FilterByActive_WhenCalled_InvokesRepositoryGetAllMethodOnce()

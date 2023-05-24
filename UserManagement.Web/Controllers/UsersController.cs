@@ -51,4 +51,22 @@ public class UsersController : Controller
         _userService.DeleteUser(user!);
         return RedirectToAction("List");
     }
+
+    [HttpGet("add")]
+    public ViewResult Add()
+    {
+        return View();
+    }
+
+    [HttpPost("add")]
+    public IActionResult Add(UserListItemViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _userService.AddUser(_dataEntityToViewModelMapper.MapTo(model));
+        return RedirectToAction("List");
+    }
 }

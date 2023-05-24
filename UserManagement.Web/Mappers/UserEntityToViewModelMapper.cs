@@ -24,4 +24,20 @@ public class UserEntityToViewModelMapper : IMapper<User, UserListItemViewModel>
             DateOfBirth = input.DateOfBirth
         };
     }
+
+    public User MapTo(UserListItemViewModel input)
+    {
+        if (input is null)
+        {
+            throw new ArgumentNullException(nameof(input));
+        }
+
+        return new User
+        {
+            Forename = input.Forename!,
+            Surname = input.Surname!,
+            Email = input.Email!,
+            DateOfBirth = input.DateOfBirth.GetValueOrDefault().ToUniversalTime()
+        };
+    }
 }

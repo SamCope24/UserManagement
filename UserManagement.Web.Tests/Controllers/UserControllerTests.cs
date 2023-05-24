@@ -79,7 +79,7 @@ public class UserControllerTests
     private static UsersController CreateControllerWith(IUserService userService, IMapper<User, UserListItemViewModel> dataEntityToViewModelMapper) =>
         new(userService, dataEntityToViewModelMapper);
 
-    private static IMapper<User, UserListItemViewModel> StubMapperFor(UserListItemViewModel viewModel) => MapperTestDoubles.StubFor<User, UserListItemViewModel>(viewModel);
+    private static IMapper<User, UserListItemViewModel> StubMapperFor(UserListItemViewModel viewModel) => MapperTestDoubles.StubForMapFrom<User, UserListItemViewModel>(viewModel);
 
     private static UserListItemViewModel AnyUserListItemViewModel(string forename = "Darth", string surname = "Vader") => new() {
         Forename = forename,
