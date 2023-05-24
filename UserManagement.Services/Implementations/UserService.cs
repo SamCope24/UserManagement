@@ -20,4 +20,6 @@ public class UserService : IUserService
         => GetAll().Where(user => user.IsActive == isActive);
 
     public IEnumerable<User> GetAll() => _dataAccess.GetAll<User>();
+    public void AddUser(User user) => _dataAccess.Create(user);
+    public void DeleteUser(User user) => _dataAccess.Delete(user);
 }
