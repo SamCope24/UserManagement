@@ -21,7 +21,7 @@ The users page contains 3 buttons below the user listing - **Show All**, **Activ
 
 Add a new property to the `User` class in the system called `DateOfBirth` which is to be used and displayed in relevant sections of the app.
 
-### 3. Actions Section (Standard)
+### 3. Actions Section (Standard) - (feature/adding-actions)
 
 Create the code and UI flows for the following actions
 * **Add** – A screen that allows you to create a new user and return to the list
