@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using UserManagement.Data.Entities;
 
 namespace UserManagement.Data;
 
@@ -28,4 +29,6 @@ public interface IDataContext
     void Update<TEntity>(TEntity entity) where TEntity : class;
 
     void Delete<TEntity>(TEntity entity) where TEntity : class;
+
+    TEntity? GetById<TEntity>(long id) where TEntity : class, IEntity;
 }

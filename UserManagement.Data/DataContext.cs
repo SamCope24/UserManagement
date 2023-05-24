@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using UserManagement.Models;
+using UserManagement.Data.Entities;
 
 namespace UserManagement.Data;
 
@@ -50,4 +50,7 @@ public class DataContext : DbContext, IDataContext
         base.Remove(entity);
         SaveChanges();
     }
+
+    public TEntity? GetById<TEntity>(long id) where TEntity : class, IEntity
+        => base.Set<TEntity>().Find(id);
 }

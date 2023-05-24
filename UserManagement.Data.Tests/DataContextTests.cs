@@ -1,5 +1,5 @@
 using System.Linq;
-using UserManagement.Models;
+using UserManagement.Data.Entities;
 
 namespace UserManagement.Data.Tests;
 

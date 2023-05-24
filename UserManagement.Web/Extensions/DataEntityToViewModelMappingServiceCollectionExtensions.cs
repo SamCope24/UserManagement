@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using UserManagement.Common.Mappers;
-using UserManagement.Models;
+using UserManagement.Data.Entities;
 using UserManagement.Web.Mappers;
 using UserManagement.Web.Models.Users;
 

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UserManagement.Models;
+using UserManagement.Data.Entities;
 
 namespace UserManagement.Services.Domain.Interfaces;
 
@@ -14,4 +14,6 @@ public interface IUserService
     IEnumerable<User> GetAll();
     void AddUser(User user);
     void DeleteUser(User user);
+    void EditUser(User user);
+    User? GetUser(long userId);
 }

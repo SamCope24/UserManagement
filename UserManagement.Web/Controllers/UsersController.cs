@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using UserManagement.Common.Mappers;
-using UserManagement.Models;
+using UserManagement.Data.Entities;
 using UserManagement.Services.Domain.Interfaces;
 using UserManagement.Web.Models.Users;
 

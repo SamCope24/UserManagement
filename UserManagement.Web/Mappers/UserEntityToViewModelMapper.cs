@@ -1,7 +1,7 @@
-using UserManagement.Models;
 using UserManagement.Web.Models.Users;
 using System;
 using UserManagement.Common.Mappers;
+using UserManagement.Data.Entities;
 
 namespace UserManagement.Web.Mappers;
 

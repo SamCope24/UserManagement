@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UserManagement.Data;
+using UserManagement.Data.Entities;
 using UserManagement.Data.Testing.Entities;
-using UserManagement.Models;
 using UserManagement.Services.Domain.Implementations;
 
 namespace UserManagement.Services.Tests.Implementations;
@@ -71,5 +71,27 @@ public class UserServiceTests
         service.DeleteUser(userToDelete);
 
         _dataContext.Verify(x => x.Delete(userToDelete), Times.Once);
+    }
+
+    [Fact]
+    public void EditUser_WhenCalled_InvokesRepositoryUpdateMethodOnce()
+    {
+        var userToUpdate = AnyUser();
+        var service = CreateService();
+
+        service.EditUser(userToUpdate);
+
+        _dataContext.Verify(x => x.Update(userToUpdate), Times.Once);
+    }
+
+    [Fact]
+    public void GetUser_WhenCalled_InvokesRepositoryGetByIdMethodOnce()
+    {
+        const long UserId = 1;
+        var service = CreateService();
+
+        service.GetUser(UserId);
+
+        _dataContext.Verify(x => x.GetById<User>(UserId), Times.Once);
     }
 }

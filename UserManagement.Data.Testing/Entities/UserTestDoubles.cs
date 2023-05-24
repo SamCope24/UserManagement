@@ -1,4 +1,4 @@
-using UserManagement.Models;
+using UserManagement.Data.Entities;
 
 namespace UserManagement.Data.Testing.Entities;
 
@@ -7,7 +7,6 @@ public static class UserTestDoubles
     public static User Stub(string forename = "Luke", string surname = "Skywalker", bool isActive = true)
         => new()
             {
-                UserGuid = Guid.NewGuid(),
                 Forename = forename,
                 Surname = surname,
                 Email = $"{forename}.{surname}@rebelalliance.org",

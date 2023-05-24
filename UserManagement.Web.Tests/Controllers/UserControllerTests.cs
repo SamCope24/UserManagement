@@ -1,8 +1,8 @@
 using System;
 using UserManagement.Common.Mappers;
 using UserManagement.Common.Testing;
+using UserManagement.Data.Entities;
 using UserManagement.Data.Testing.Entities;
-using UserManagement.Models;
 using UserManagement.Services.Domain.Interfaces;
 using UserManagement.Web.Models.Users;
 using UserManagement.WebMS.Controllers;

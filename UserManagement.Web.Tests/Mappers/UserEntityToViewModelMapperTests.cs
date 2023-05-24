@@ -1,6 +1,6 @@
 using System;
+using UserManagement.Data.Entities;
 using UserManagement.Data.Testing.Entities;
-using UserManagement.Models;
 using UserManagement.Web.Mappers;
 
 namespace UserManagement.Web.Tests.Mappers;
