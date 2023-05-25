@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using UserManagement.Data.Entities;
 
 namespace UserManagement.Data.Testing.Entities;
 
+[ExcludeFromCodeCoverage]
 public static class UserTestDoubles
 {
     public static User Stub(string forename = "Luke", string surname = "Skywalker", bool isActive = true)

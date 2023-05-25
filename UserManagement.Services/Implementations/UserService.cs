@@ -42,7 +42,19 @@ public class UserService : IUserService
             throw;
         }
     }
-    public void EditUser(User user) => _dataAccess.Update(user);
+    public void EditUser(User user)
+    {
+        try
+        {
+            _dataAccess.Update(user);
+            _logger.Log($"User Edited - {user.Print()}");
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex);
+            throw;
+        }
+    }
 
     public User? GetUser(long userId)
     {

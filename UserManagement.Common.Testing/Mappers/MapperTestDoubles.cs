@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using UserManagement.Common.Mappers;
 
 namespace UserManagement.Common.Testing;
 
+[ExcludeFromCodeCoverage]
 public static class MapperTestDoubles
 {
     public static IMapper<TFrom, TTo> Dummy<TFrom, TTo>()

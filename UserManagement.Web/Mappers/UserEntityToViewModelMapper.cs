@@ -34,6 +34,7 @@ public class UserEntityToViewModelMapper : IMapper<User, UserListItemViewModel>
 
         return new User
         {
+            Id = input.Id!,
             Forename = input.Forename!,
             Surname = input.Surname!,
             Email = input.Email!,

@@ -87,8 +87,45 @@ public class UsersController : Controller
             return NotFound();
         }
 
-        var viewModel = _dataEntityToViewModelMapper.MapFrom(user);
+        var model = _dataEntityToViewModelMapper.MapFrom(user);
 
-        return View(viewModel);
+        return View(model);
+    }
+
+    [HttpGet("edit/{id}")]
+    public IActionResult Edit(long id)
+    {
+        var user = _userService.GetUser(id);
+
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        var model = _dataEntityToViewModelMapper.MapFrom(user);
+
+        return View(model);
+    }
+
+    [HttpPost("edit/{id}")]
+    public IActionResult Edit(UserListItemViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        try
+        {
+            var updatedUser = _dataEntityToViewModelMapper.MapTo(model);
+            _userService.EditUser(updatedUser);
+        }
+        catch
+        {
+            TempData["ErrorMessage"] = "An error occurred while attempting to update the user.";
+            return View(model);
+        }
+
+        return RedirectToAction("List");
     }
 }

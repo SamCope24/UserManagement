@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UserManagement.Common.Logging;
@@ -13,15 +14,33 @@ public class UserServiceTests
     private readonly Mock<IDataContext> _dataContext = new();
 
     [Fact]
+    public void Constructor_AfterCallingWithNullDataAccess_ThrowsArgumentNullException()
+    {
+        FluentActions.Invoking(() => CreateServiceWith(dataAccess: null!, DummyLogger()))
+            .Should()
+            .Throw<ArgumentNullException>()
+            .WithParameterName("dataAccess");
+    }
+
+    private static UserService CreateServiceWith(IDataContext dataAccess, ILogger logger)
+        => new(dataAccess, logger);
+
+    [Fact]
+    public void Constructor_AfterCallingWithNullLogger_ThrowsArgumentNullException()
+    {
+        FluentActions.Invoking(() => CreateServiceWith(_dataContext.Object, logger: null!))
+            .Should()
+            .Throw<ArgumentNullException>()
+            .WithParameterName("logger");
+    }
+
+    [Fact]
     public void GetAll_WhenCalled_InvokesRepositoryGetAllMethodOnce()
     {
         var service = CreateService();
         service.GetAll();
         _dataContext.Verify(x => x.GetAll<User>(), Times.Once);
     }
-
-    private static UserService CreateServiceWith(IDataContext dataAccess, ILogger logger)
-        => new(dataAccess, logger);
 
     private UserService CreateService() =>
         CreateServiceWith(_dataContext.Object, DummyLogger());
@@ -82,6 +101,50 @@ public class UserServiceTests
     }
 
     [Fact]
+    public void DeleteUser_AfterSuccessfulDelete_InvokesLoggerLogMethodOnce()
+    {
+        var mockLogger = new Mock<ILogger>();
+        _dataContext.Setup(x => x.GetById<User>(It.IsAny<long>())).Returns(AnyUser());
+        var service = CreateServiceWith(_dataContext.Object, mockLogger.Object);
+
+        service.DeleteUser(It.IsAny<long>());
+
+        mockLogger.Verify(x => x.Log(It.Is<string>(x => x.Contains("User Deleted"))), Times.Once);
+    }
+
+    [Fact]
+    public void DeleteUser_AfterUnsuccessfulDelete_InvokesLoggerLogErrorMethodOnce()
+    {
+        var mockLogger = new Mock<ILogger>();
+        var exceptionThrown = new Exception("could not delete user");
+        _dataContext.Setup(x => x.GetById<User>(It.IsAny<long>())).Throws(exceptionThrown);
+        var service = CreateServiceWith(_dataContext.Object, mockLogger.Object);
+
+        try
+        {
+            service.DeleteUser(It.IsAny<long>());
+        }
+        catch
+        {
+            mockLogger.Verify(x => x.LogError(exceptionThrown), Times.Once);
+        }
+    }
+
+    [Fact]
+    public void DeleteUser_AfterUnsuccessfulDelete_ThrowsException()
+    {
+        var mockLogger = new Mock<ILogger>();
+        var exceptionThrown = new Exception("could not delete user");
+        _dataContext.Setup(x => x.GetById<User>(It.IsAny<long>())).Throws(exceptionThrown);
+        var service = CreateServiceWith(_dataContext.Object, mockLogger.Object);
+
+        service.Invoking(x => x.DeleteUser(It.IsAny<long>()))
+            .Should()
+            .Throw<Exception>()
+            .WithMessage(exceptionThrown.Message);
+    }
+
+    [Fact]
     public void EditUser_WhenCalled_InvokesRepositoryUpdateMethodOnce()
     {
         var userToUpdate = AnyUser();
@@ -102,5 +165,30 @@ public class UserServiceTests
         service.GetUser(UserId);
 
         _dataContext.Verify(x => x.GetById<User>(UserId), Times.Once);
+    }
+
+    [Fact]
+    public void GetUser_AfterSuccessfulFetch_InvokesLoggerLogMethodOnce()
+    {
+        var mockLogger = new Mock<ILogger>();
+        _dataContext.Setup(x => x.GetById<User>(It.IsAny<long>())).Returns(AnyUser());
+        var service = CreateServiceWith(_dataContext.Object, mockLogger.Object);
+
+        service.GetUser(It.IsAny<long>());
+
+        mockLogger.Verify(x => x.Log(It.Is<string>(x => x.Contains("User Viewed"))), Times.Once);
+    }
+
+    [Fact]
+    public void GetUser_AfterUnsuccessfulFetch_InvokesLoggerLogErrorMethodOnce()
+    {
+        var mockLogger = new Mock<ILogger>();
+        var exceptionThrown = new Exception("could not get user");
+        _dataContext.Setup(x => x.GetById<User>(It.IsAny<long>())).Throws(exceptionThrown);
+        var service = CreateServiceWith(_dataContext.Object, mockLogger.Object);
+
+        service.GetUser(It.IsAny<long>());
+
+        mockLogger.Verify(x => x.LogError(exceptionThrown), Times.Once);
     }
 }
