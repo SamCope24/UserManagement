@@ -38,7 +38,8 @@ public class UserEntityToViewModelMapper : IMapper<User, UserListItemViewModel>
             Forename = input.Forename!,
             Surname = input.Surname!,
             Email = input.Email!,
-            DateOfBirth = input.DateOfBirth.GetValueOrDefault().ToUniversalTime()
+            IsActive = input.IsActive,
+            DateOfBirth = input.DateOfBirth.GetValueOrDefault().ToUniversalTime(),
         };
     }
 }
