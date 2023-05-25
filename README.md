@@ -54,3 +54,53 @@ Some ideas are:
 
 * Please feel free to change or refactor any code that has been supplied within the solution and think about clean maintainable code and architecture when extending the project.
 * If any additional packages, tools or setup are required to run your completed version, please document these thoroughly.
+
+## Instructions for running the application
+
+I Have used VSCode as my IDE for this task and git bash as my terminal.
+
+*You will need a few tools to run the application using the real database:
+
+1. Docker - https://www.docker.com/get-started/
+2. EF command line tools - https://learn.microsoft.com/en-us/ef/core/cli/dotnet
+3. DBA Tool if wishing to visually see records (optional) - I used DBeaver: https://dbeaver.io/
+
+*Once you have got all the tools installed, the first step is to get the database container running.
+You can see the details of how the instance is set up in the docker-compose.yml file.
+
+1. From the root directory of the repo run: **docker-compose up -d**
+ -this will start the container
+2. Next you need to wait approx 30 seconds for the container to settle. You can check to see
+when it's ready to start accepting connections through Docker Desktop
+3. Once it's started the postgres instance, we're ready for migrations
+
+*The next step involves using the ef core cli tools to apply the ef migrations to our postgres instance
+
+1. Navigate to the UserManagement.Data directory
+2. Run the command **ef core database update --context PostgresDataContext**
+3. If all goes well, the database should now be seeded
+
+*I've added some extra configuration to appsettings.json to allow toggling between the in-memory
+and the postgres context so we can now switch this over.
+
+1. In appsettings.json of UserManagement.Web set the **UseInMemory** setting to **false**
+2. hit f5 to start debugging in VSCode / **dotnet run** from the UserManagement.Web directory
+
+*If all is well, the application should now be running against the real database.
+If for any reason you want to clear out the database and start again, you can do the following:
+
+1. run: **docker-compose down**
+2. this should kill the container
+3. delete the **data** directory in the root of the project to clear out the database
+4. run the database update command again as described earlier to re-seed with the initial data
+
+*(optional) If you want to inspect the data in a DBA tool, the connection string is:
+"Host=localhost;Database=users;Username=postgres;Password=postgres;Port=5432"
+
+---------------------------------------------------------------------------------------------------
+
+**Thank you again for this opportunity. I really enjoyed this task and there's**
+**loads more I would have liked to have done with it to improve the solution.**
+**I hope to discuss it more with you in an interview.**
+
+**Cheers - Sam**
