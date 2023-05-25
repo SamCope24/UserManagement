@@ -35,20 +35,97 @@ public class UsersController : Controller
         _userService.GetAll().Select(p => _dataEntityToViewModelMapper.MapFrom(p)).ToList();
 
     [HttpGet("filter-by-active")]
-    public ViewResult FilterByActive(bool isActive)
+    public ViewResult ListByActive(bool isActive)
     {
         var activeUserItems = GetFilteredUsers(isActive);
         return GetUserListViewResult(activeUserItems);
     }
 
     private List<UserListItemViewModel> GetFilteredUsers(bool isActive) =>
-        _userService.FilterByActive(isActive).Select(_dataEntityToViewModelMapper.MapFrom).ToList();
+        _userService.GetByIsActive(isActive).Select(_dataEntityToViewModelMapper.MapFrom).ToList();
 
     [HttpGet("delete/{id}")]
     public IActionResult Delete(long id)
     {
+        try
+        {
+            _userService.DeleteUser(id);
+            return RedirectToAction("List");
+        }
+        catch
+        {
+            TempData["ErrorMessage"] = "An error occurred while attempting to delete the user.";
+            return RedirectToAction("List");
+        }
+    }
+
+    [HttpGet("add")]
+    public ViewResult Add()
+    {
+        return View();
+    }
+
+    [HttpPost("add")]
+    public IActionResult Add(UserListItemViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _userService.AddUser(_dataEntityToViewModelMapper.MapTo(model));
+        return RedirectToAction("List");
+    }
+
+    [HttpGet("details/{id}")]
+    public IActionResult Details(long id)
+    {
         var user = _userService.GetUser(id);
-        _userService.DeleteUser(user!);
+
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        var model = _dataEntityToViewModelMapper.MapFrom(user);
+
+        return View(model);
+    }
+
+    [HttpGet("edit/{id}")]
+    public IActionResult Edit(long id)
+    {
+        var user = _userService.GetUser(id);
+
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        var model = _dataEntityToViewModelMapper.MapFrom(user);
+
+        return View(model);
+    }
+
+    [HttpPost("edit/{id}")]
+    public IActionResult Edit(UserListItemViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        try
+        {
+            var updatedUser = _dataEntityToViewModelMapper.MapTo(model);
+            _userService.EditUser(updatedUser);
+        }
+        catch
+        {
+            TempData["ErrorMessage"] = "An error occurred while attempting to update the user.";
+            return View(model);
+        }
+
         return RedirectToAction("List");
     }
 }

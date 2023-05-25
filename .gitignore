@@ -249,3 +249,6 @@ ModelManifest.xml
 
 # Postgres Data
 data/
+
+# Code coverage
+**/coverage.info
