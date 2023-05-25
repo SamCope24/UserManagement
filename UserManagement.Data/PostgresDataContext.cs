@@ -23,12 +23,12 @@ public class PostgresDataContext : DataContext
             new User { Id = 2, Forename = "Leia", Surname = "Organa", Email = "leia@jointhealliance.com", IsActive = true, DateOfBirth = new DateTime(1977, 5, 25, 0, 0, 0, DateTimeKind.Utc) },
             new User { Id = 3, Forename = "Han", Surname = "Solo", Email = "han@jointhealliance.com", IsActive = false, DateOfBirth = new DateTime(1977, 5, 25, 0, 0, 0, DateTimeKind.Utc) },
             new User { Id = 4, Forename = "Darth", Surname = "Vader", Email = "vader@thedeathstar.org", IsActive = true, DateOfBirth = new DateTime(1977, 5, 25, 0, 0, 0, DateTimeKind.Utc) },
-            new User { Id = 5, Forename = "Yoda", Surname = "", Email = "yoda@jointhealliance.com", IsActive = true, DateOfBirth = new DateTime(896, 5, 25, 0, 0, 0, DateTimeKind.Utc) },
+            new User { Id = 5, Forename = "Yoda", Surname = "???", Email = "yoda@jointhealliance.com", IsActive = true, DateOfBirth = new DateTime(896, 5, 25, 0, 0, 0, DateTimeKind.Utc) },
             new User { Id = 6, Forename = "Obi-Wan", Surname = "Kenobi", Email = "obiwan@jointhealliance.com", IsActive = true, DateOfBirth = new DateTime(57, 5, 25, 0, 0, 0, DateTimeKind.Utc) },
             new User { Id = 7, Forename = "Anakin", Surname = "Skywalker", Email = "anakin@thedeathstar.org", IsActive = false, DateOfBirth = new DateTime(41, 5, 25, 0, 0, 0, DateTimeKind.Utc) },
             new User { Id = 8, Forename = "Padmé", Surname = "Amidala", Email = "padme@jointhealliance.com", IsActive = false, DateOfBirth = new DateTime(46, 5, 25, 0, 0, 0, DateTimeKind.Utc) },
-            new User { Id = 9, Forename = "Chewbacca", Surname = "", Email = "chewie@jointhealliance.com", IsActive = false, DateOfBirth = new DateTime(200, 5, 25, 0, 0, 0, DateTimeKind.Utc) },
+            new User { Id = 9, Forename = "Chewbacca", Surname = "???", Email = "chewie@jointhealliance.com", IsActive = false, DateOfBirth = new DateTime(200, 5, 25, 0, 0, 0, DateTimeKind.Utc) },
             new User { Id = 10, Forename = "Mace", Surname = "Windu", Email = "mace@jointhealliance.com", IsActive = true, DateOfBirth = new DateTime(72, 5, 25, 0, 0, 0, DateTimeKind.Utc) },
-            new User { Id = 11, Forename = "Rey", Surname = "", Email = "rey@jointhealliance.com", IsActive = true, DateOfBirth = new DateTime(15, 5, 25, 0, 0, 0, DateTimeKind.Utc) }
+            new User { Id = 11, Forename = "Rey", Surname = "???", Email = "rey@jointhealliance.com", IsActive = true, DateOfBirth = new DateTime(15, 5, 25, 0, 0, 0, DateTimeKind.Utc) }
         });
 }
