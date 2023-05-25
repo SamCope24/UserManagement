@@ -35,21 +35,28 @@ public class UsersController : Controller
         _userService.GetAll().Select(p => _dataEntityToViewModelMapper.MapFrom(p)).ToList();
 
     [HttpGet("filter-by-active")]
-    public ViewResult FilterByActive(bool isActive)
+    public ViewResult ListByActive(bool isActive)
     {
         var activeUserItems = GetFilteredUsers(isActive);
         return GetUserListViewResult(activeUserItems);
     }
 
     private List<UserListItemViewModel> GetFilteredUsers(bool isActive) =>
-        _userService.FilterByActive(isActive).Select(_dataEntityToViewModelMapper.MapFrom).ToList();
+        _userService.GetByIsActive(isActive).Select(_dataEntityToViewModelMapper.MapFrom).ToList();
 
     [HttpGet("delete/{id}")]
     public IActionResult Delete(long id)
     {
-        var user = _userService.GetUser(id);
-        _userService.DeleteUser(user!);
-        return RedirectToAction("List");
+        try
+        {
+            _userService.DeleteUser(id);
+            return RedirectToAction("List");
+        }
+        catch
+        {
+            TempData["ErrorMessage"] = "An error occurred while attempting to delete the user.";
+            return RedirectToAction("List");
+        }
     }
 
     [HttpGet("add")]
@@ -68,5 +75,20 @@ public class UsersController : Controller
 
         _userService.AddUser(_dataEntityToViewModelMapper.MapTo(model));
         return RedirectToAction("List");
+    }
+
+    [HttpGet("details/{id}")]
+    public IActionResult Details(long id)
+    {
+        var user = _userService.GetUser(id);
+
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        var viewModel = _dataEntityToViewModelMapper.MapFrom(user);
+
+        return View(viewModel);
     }
 }

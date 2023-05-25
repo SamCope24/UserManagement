@@ -20,7 +20,7 @@ public class UserService : IUserService
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public IEnumerable<User> FilterByActive(bool isActive)
+    public IEnumerable<User> GetByIsActive(bool isActive)
         => GetAll().Where(user => user.IsActive == isActive);
     public IEnumerable<User> GetAll() => _dataAccess.GetAll<User>();
     public void AddUser(User user)
@@ -28,11 +28,37 @@ public class UserService : IUserService
         _dataAccess.Create(user);
         _logger.Log($"User Added - {user.Print()}");
     }
-    public void DeleteUser(User user)
+    public void DeleteUser(long userId)
     {
-        _dataAccess.Delete(user);
-        _logger.Log($"User Deleted - {user.Print()}");
+        try
+        {
+            var user = GetUserData(userId);
+            _dataAccess.Delete(user);
+            _logger.Log($"User Deleted - {user.Print()}");
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex);
+            throw;
+        }
     }
     public void EditUser(User user) => _dataAccess.Update(user);
-    public User? GetUser(long userId) => _dataAccess.GetById<User>(userId);
+
+    public User? GetUser(long userId)
+    {
+        try
+        {
+            var user = GetUserData(userId);
+            _logger.Log($"User Viewed - {user.Print()}");
+            return user;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex);
+            return default;
+        }
+    }
+
+    private User GetUserData(long userId)
+        => _dataAccess.GetById<User>(userId) ?? throw new Exception($"Could not find record for User; userId={userId}");
 }

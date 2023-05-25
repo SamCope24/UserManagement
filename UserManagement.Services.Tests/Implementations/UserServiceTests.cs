@@ -29,22 +29,22 @@ public class UserServiceTests
     private static ILogger DummyLogger() => Mock.Of<ILogger>();
 
     [Fact]
-    public void FilterByActive_WhenCalled_InvokesRepositoryGetAllMethodOnce()
+    public void GetByIsActive_WhenCalled_InvokesRepositoryGetAllMethodOnce()
     {
         var service = CreateService();
-        service.FilterByActive(It.IsAny<bool>());
+        service.GetByIsActive(It.IsAny<bool>());
         _dataContext.Verify(x => x.GetAll<User>(), Times.Once);
     }
 
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void Result_AfterCallingFilterByActive_IsFilteredListOfUsers(bool isActive)
+    public void Result_AfterCallingGetByIsActive_IsFilteredListOfUsers(bool isActive)
     {
         _dataContext.Setup(x => x.GetAll<User>()).Returns(AnyUsers().AsQueryable());
         var service = CreateService();
 
-        var result = service.FilterByActive(isActive);
+        var result = service.GetByIsActive(isActive);
 
         result.Should().AllSatisfy(x => x.IsActive.Equals(isActive));
     }
@@ -73,9 +73,10 @@ public class UserServiceTests
     public void DeleteUser_WhenCalled_InvokesRepositoryDeleteMethodOnce()
     {
         var userToDelete = AnyUser();
+        _dataContext.Setup(x => x.GetById<User>(userToDelete.Id)).Returns(userToDelete);
         var service = CreateService();
 
-        service.DeleteUser(userToDelete);
+        service.DeleteUser(userToDelete.Id);
 
         _dataContext.Verify(x => x.Delete(userToDelete), Times.Once);
     }
@@ -95,6 +96,7 @@ public class UserServiceTests
     public void GetUser_WhenCalled_InvokesRepositoryGetByIdMethodOnce()
     {
         const long UserId = 1;
+        _dataContext.Setup(x => x.GetById<User>(UserId)).Returns(UserTestDoubles.Stub());
         var service = CreateService();
 
         service.GetUser(UserId);
