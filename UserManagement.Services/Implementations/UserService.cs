@@ -48,6 +48,8 @@ public class UserService : IUserService
         {
             _dataAccess.Update(user);
             _logger.Log($"User Edited - {user.Print()}");
+            // would have ideally liked to include some more detailed logging here like changed fields etc..
+            // but ran out of time! :(
         }
         catch(Exception ex)
         {
