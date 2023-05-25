@@ -80,7 +80,8 @@ when it's ready to start accepting connections through Docker Desktop it will ha
 1. Navigate to the UserManagement.Data directory **pushd UserManagement.Data**
 2. Run the command **dotnet ef database update --context PostgresDataContext**
 3. (note if you get an error about password authentication you may have postgres installed locally. If you stop that service from task manager and then run this command again it should work)
-4. If all goes well, the database should now be seeded
+4. (note if you get: Exception while reading from stream then the container has not booted up yet so wait a few more seconds before trying again)
+5. If all goes well, the database should now be seeded
 
 *I've added some extra configuration to appsettings.json to allow toggling between the in-memory
 and the postgres context so we can now switch this over.
